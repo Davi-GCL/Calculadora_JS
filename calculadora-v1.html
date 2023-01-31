@@ -27,6 +27,8 @@
         <input type="submit" class="btn-num" id="btn9" value="9">
         <input type="submit" class="btn-plus" id="btnPlus" value="+">
         <input type="submit" class="btn-sub" id="btnSub" value="-">
+        <input type="submit" class="btn-mult" id="btnMult" value="*">
+        <input type="submit" class="btn-div" id="btnDiv" value="/">
         <input type="submit" class="btn-equal" id="btnEqual" value="=">
     </div>
 </div>
@@ -36,8 +38,11 @@
     const display = document.querySelector("#visor");
     const buttons = document.querySelectorAll(".btn-num");
     const btn_plus = document.querySelector("#btnPlus");
-    const btn_equal = document.querySelector("#btnEqual");
     const btn_sub = document.querySelector("#btnSub");
+    const btn_mult = document.querySelector("#btnMult");
+    const btn_div = document.querySelector("#btnDiv");
+    const btn_equal = document.querySelector("#btnEqual");
+
 
     var valor = '';
     var valores = [];
@@ -63,7 +68,7 @@
         }else if(entrada == '/'){
             div();         
         }else if(entrada == "Backspace"){
-            valor = valor.slice(0, -1);
+            valor = valor.slice(0, -1); //Armazena o valor da cadeia, com exceção do ultimo caractere (simulando o backspace)
             console.log(valor)
         }
         
@@ -93,6 +98,20 @@
     btn_sub.addEventListener('click', (e) => {
         display.value += " - ";
         sub();
+
+        display.focus();
+    })
+
+    btn_mult.addEventListener('click', (e) => {
+        display.value += " * ";
+        mult();
+
+        display.focus();
+    })
+
+    btn_div.addEventListener('click', (e) => {
+        display.value += " / ";
+        div();
 
         display.focus();
     })
@@ -151,12 +170,14 @@ function equal(){
         if(valores[i] == "*"){
             aux = parseInt(valores[i-1]) * parseInt(valores[i+1]);
             valores[i+1] = aux; 
+            valores.splice((i-1),2); //Remove da lista, o valor e o simbolo da operação
             console.log(valores);
             
         }
         else if(valores[i] == "/"){
             aux = parseInt(valores[i-1]) / parseInt(valores[i+1]);
             valores[i+1] = aux; 
+            valores.splice((i-1),2); //Remove da lista, o valor e o simbolo da operação
             
         }
     }
