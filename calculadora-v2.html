@@ -8,28 +8,105 @@
 </head>
 <body>
     <form>
-        <input type="text" id="input">
+        <input type="text" id="input" autofocus="true">
         <br><br>
-        <button type="button" id="calculate">Calculate</button>
+        <button type="button" id="calculate">Calcular</button>
         <br><br>
         <p id="result"></p>
       </form>
+      <input type="submit" class="btn num" id="btn0" value="0">
+      <input type="submit" class="btn num" id="btn1" value="1">
+      <input type="submit" class="btn num" id="btn2" value="2">
+      <input type="submit" class="btn num" id="btn3" value="3">
+      <input type="submit" class="btn num" id="btn4" value="4">
+      <input type="submit" class="btn num" id="btn5" value="5">
+      <input type="submit" class="btn num" id="btn6" value="6">
+      <input type="submit" class="btn num" id="btn7" value="7">
+      <input type="submit" class="btn num" id="btn8" value="8">
+      <input type="submit" class="btn num" id="btn9" value="9">
+      <input type="submit" class="btn plus" id="btnPlus" value="+">
+      <input type="submit" class="btn sub" id="btnSub" value="-">
+      <input type="submit" class="btn mult" id="btnMult" value="*">
+      <input type="submit" class="btn div" id="btnDiv" value="/">
+      <!-- <input type="submit" class="btn equal" id="btnEqual" value="="> -->
+      
 </body>
 </html>
 <script>
-    let input = document.getElementById("input");
-    let calculateButton = document.getElementById("calculate");
-    let result = document.getElementById("result");
+  const input = document.getElementById("input");
+  const calculateButton = document.getElementById("calculate");
+  const result = document.getElementById("result");
+  const buttons = document.querySelectorAll(".btn");
 
-calculateButton.addEventListener("click", function() {
-  let equation = input.value;
-  let answer;
-  try {
-    answer = eval(equation);
-  } catch (error) {
-    result.innerHTML = "Error: Invalid equation";
-    return;
+  const acceptedChars = ['0','1','2','3','4','5','6','7','8','9','+','-','*','/','=',',','.',' '];
+
+//Adiciona o evento de click para multiplos botoes
+  buttons.forEach(element => {
+    if(element.value == 'C'){
+       console.log(element.value)//algoritmo pro botao de limpar
+     }else{
+      element.addEventListener('click', (e) => {
+          let entrada = e.target.value;
+          console.log(entrada);
+
+          input.value += entrada;
+
+          input.focus();
+      }); 
+     }
+  });
+
+  //Algoritmo pra impedir a recarga da pagina ao apertar enter no formulario
+  input.addEventListener('submit', (e) => { 
+    e.preventDefault();
+  })
+
+  //'mascara de formulario' => Algoritmo que permite apenas a entrada de caracteres permitidos (evitando a entrada de codigos maliciosos)
+  input.addEventListener("keypress", (e) =>{
+    console.log(e.key);
+
+    if(verify(acceptedChars, e.key) == false){ //Se o caracter digitado não for um algarismo, sera barrada a sua entrada no campo input 
+          e.preventDefault();
+    }
+    if(e.key == "Enter"){
+      calculate();
+    }
+  });
+
+  calculateButton.addEventListener("click", calculate);
+
+  //Funçao que calcula a equaçao entrada e exibe a resposta
+  function calculate(e){
+    let equation = input.value.replace(',','.'); //Altera a virgula pelo ponto
+    let answer;
+
+    try {
+      answer = eval(equation);
+    } catch (error) {
+      result.innerHTML = "Erro: Equação invalida!";
+      return;
+    }
+    
+    result.innerHTML = "Resultado: " + answer;
+    
   }
-  result.innerHTML = "Result: " + answer;
-});
+
+  // Verifica se o elemento informado em 'search' esta presente no 'array'
+  function verify(array, search){
+      for (let i = 0; i < array.length; i++) {
+          if (array[i] == search) {
+              return true;
+          }
+          
+      }
+      return false;
+  }
+
+  document.addEventListener('keypress', (e)=>{
+    if(verify(acceptedChars, e.key) == true || e.key == 'Enter'){
+      input.focus();
+    }
+    
+  })
+
 </script>
