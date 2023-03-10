@@ -59,7 +59,13 @@
   //Algoritmo pra impedir a recarga da pagina ao apertar enter no formulario
   input.addEventListener('submit', (e) => { 
     e.preventDefault();
-  })
+  });
+
+  document.addEventListener('keypress', (e)=>{
+    if(verify(acceptedChars, e.key) == true || e.key == 'Enter'){
+      input.focus();
+    } 
+  });
 
   //'mascara de formulario' => Algoritmo que permite apenas a entrada de caracteres permitidos (evitando a entrada de codigos maliciosos)
   input.addEventListener("keypress", (e) =>{
@@ -102,11 +108,5 @@
       return false;
   }
 
-  document.addEventListener('keypress', (e)=>{
-    if(verify(acceptedChars, e.key) == true || e.key == 'Enter'){
-      input.focus();
-    }
-    
-  })
 
 </script>
